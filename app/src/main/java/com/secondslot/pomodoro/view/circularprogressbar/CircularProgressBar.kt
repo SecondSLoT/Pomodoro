@@ -1,12 +1,12 @@
-package com.secondslot.pomodoro.view.customview
+package com.secondslot.pomodoro.view.circularprogressbar
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.AttrRes
+import androidx.core.content.ContextCompat
 import com.secondslot.pomodoro.R
 
 class CircularProgressBar @JvmOverloads constructor(
@@ -30,7 +30,10 @@ class CircularProgressBar @JvmOverloads constructor(
                 0
             )
 
-            color = styledAttrs.getColor(R.styleable.CircularProgressBar_custom_color, Color.RED)
+            color = styledAttrs.getColor(
+                R.styleable.CircularProgressBar_custom_color,
+                ContextCompat.getColor(context, R.color.red_700)
+            )
             style = styledAttrs.getInt(R.styleable.CircularProgressBar_custom_style, FILL)
             styledAttrs.recycle()
         }
