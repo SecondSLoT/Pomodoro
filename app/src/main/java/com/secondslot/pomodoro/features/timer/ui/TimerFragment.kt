@@ -31,7 +31,6 @@ class TimerFragment : Fragment(), TimerListener {
         _binding = FragmentTimerBinding.inflate(inflater, container, false)
         initViews()
         setListeners()
-        viewModel.onTimerFragmentStateChanged(true)
         return binding.root
     }
 
@@ -81,6 +80,11 @@ class TimerFragment : Fragment(), TimerListener {
 //            viewModel.timers.add(Timer(viewModel.nextId++, 1000, 1000))
 //        }
 //        submitTimerList(viewModel.timers)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.onTimerFragmentStateChanged(true)
     }
 
     private fun setObservers() {
