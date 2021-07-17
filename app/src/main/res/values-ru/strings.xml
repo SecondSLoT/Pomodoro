@@ -8,4 +8,5 @@
     <string name="hours">часы</string>
     <string name="minutes">минуты</string>
     <string name="seconds">секунды</string>
+    <string name="time_not_set_message">Сначала задайте время!</string>
 </resources>
