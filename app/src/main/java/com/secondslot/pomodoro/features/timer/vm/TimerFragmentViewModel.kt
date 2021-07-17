@@ -24,10 +24,15 @@ class TimerFragmentViewModel : ViewModel() {
     private val _alarmLiveData = MutableLiveData<LiveDataEvent<Int>>()
     val alarmLiveData = _alarmLiveData as LiveData<LiveDataEvent<Int>>
 
+    private val _timeNotSetLiveData = MutableLiveData<LiveDataEvent<Boolean>>()
+    val timeNotSetLiveData = _timeNotSetLiveData as LiveData<LiveDataEvent<Boolean>>
+
     fun onAddNewTimerButtonClicked(startMs: Long) {
         if (startMs != 0L) {
             timers.add(Timer(nextId++, startMs, startMs))
             _updateTimerListLiveData.value = timers
+        } else {
+            _timeNotSetLiveData.value = LiveDataEvent(true)
         }
     }
 

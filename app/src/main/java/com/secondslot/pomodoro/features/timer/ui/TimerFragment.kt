@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.secondslot.pomodoro.R
 import com.secondslot.pomodoro.databinding.FragmentTimerBinding
@@ -89,9 +88,18 @@ class TimerFragment : Fragment(), TimerListener {
 
     private fun setObservers() {
         viewModel.updateTimerListLiveData.observe(viewLifecycleOwner, { submitTimerList(it) })
-        viewModel.alarmLiveData.observe(viewLifecycleOwner, { it.getContentIfNotHandled()?.let {
-            runAlarm(it)
-        } })
+
+        viewModel.alarmLiveData.observe(viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let {
+                runAlarm(it)
+            }
+        })
+
+        viewModel.timeNotSetLiveData.observe(viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let {
+                showTimeNotSetToast()
+            }
+        })
     }
 
     private fun submitTimerList(timers: List<Timer>) {
@@ -117,6 +125,14 @@ class TimerFragment : Fragment(), TimerListener {
         Toast.makeText(
             context,
             text,
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun showTimeNotSetToast() {
+        Toast.makeText(
+            context,
+            R.string.time_not_set_message,
             Toast.LENGTH_SHORT
         ).show()
     }
