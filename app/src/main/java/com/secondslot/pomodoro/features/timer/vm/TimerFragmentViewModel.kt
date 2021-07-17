@@ -1,9 +1,11 @@
 package com.secondslot.pomodoro.features.timer.vm
 
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.secondslot.pomodoro.core.LiveDataEventWrapper.LiveDataEvent
 import com.secondslot.pomodoro.eventbus.WorkingTimerEvent
 import com.secondslot.pomodoro.features.timer.model.Timer
 import org.greenrobot.eventbus.EventBus
@@ -14,12 +16,13 @@ class TimerFragmentViewModel : ViewModel() {
     var nextId = 0
     private var startedTimerId = -1
     private var countDownTimer: CountDownTimer? = null
+    private var isTimerFragmentStarted = true
 
     private val _updateTimerListLiveData = MutableLiveData<List<Timer>>()
     val updateTimerListLiveData = _updateTimerListLiveData as LiveData<List<Timer>>
 
-    private val _alarmLiveData = MutableLiveData<Int>()
-    val alarmLiveData = _alarmLiveData as LiveData<Int>
+    private val _alarmLiveData = MutableLiveData<LiveDataEvent<Int>>()
+    val alarmLiveData = _alarmLiveData as LiveData<LiveDataEvent<Int>>
 
     fun onAddNewTimerButtonClicked(startMs: Long) {
         if (startMs != 0L) {
@@ -83,7 +86,9 @@ class TimerFragmentViewModel : ViewModel() {
 
             override fun onFinish() {
                 changeTimer(timer.id, null, isStarted = false, isFinished = true)
-                _alarmLiveData.value = timer.id
+                Log.d("myLogs", "onFinish() called")
+                if (isTimerFragmentStarted) _alarmLiveData.value = LiveDataEvent(timer.id)
+                unregisterStartedTimer(timer.id)
             }
         }
     }
@@ -94,6 +99,10 @@ class TimerFragmentViewModel : ViewModel() {
             startedTimerId = -1
             EventBus.getDefault().post(WorkingTimerEvent(startedTimerId))
         }
+    }
+
+    fun onTimerFragmentStateChanged(isStarted: Boolean) {
+        isTimerFragmentStarted = isStarted
     }
 
     companion object {

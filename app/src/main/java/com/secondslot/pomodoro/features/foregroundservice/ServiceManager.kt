@@ -2,7 +2,6 @@ package com.secondslot.pomodoro.features.foregroundservice
 
 import android.content.Context
 import android.content.Intent
-import androidx.core.view.ContentInfoCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent

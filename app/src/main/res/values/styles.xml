@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <style name="TimePickerText">
+        <item name="android:hint">00</item>
+        <item name="android:maxLength">2</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:inputType">time</item>
+        <item name="android:textAppearance">?attr/textAppearanceHeadline4</item>
+        <item name="android:textAlignment">viewEnd</item>
+    </style>
+    
+</resources>

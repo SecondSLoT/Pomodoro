@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_timer">добавить таймер</string>
+    <string name="timer">Таймер</string>
+    <string name="time_is_up">Время вышло!</string>
+    <string name="start">старт</string>
+    <string name="stop">стоп</string>
+    <string name="hours">часы</string>
+    <string name="minutes">минуты</string>
+    <string name="seconds">секунды</string>
+</resources>

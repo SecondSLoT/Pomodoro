@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.media.RingtoneManager
 import android.os.Build
 import android.os.CountDownTimer
 import android.os.IBinder
@@ -74,6 +75,19 @@ class ForegroundService : Service() {
         }
     }
 
+    private fun commandStop() {
+        if (!isServiceStarted) return
+
+        Log.i("TAG", "commandStop()")
+        try {
+            countDownTimer?.cancel()
+            stopForeground(true)
+            stopSelf()
+        } finally {
+            isServiceStarted = false
+        }
+    }
+
     private fun continueTimer(startTime: Long) {
         countDownTimer = object: CountDownTimer(startTime, INTERVAL) {
 
@@ -87,23 +101,13 @@ class ForegroundService : Service() {
             override fun onFinish() {
                 notificationManager?.notify(
                     NOTIFICATION_ID,
-                    getNotification("00:00:00")
+                    getNotification("00:00:00 Time is up!")
                 )
+                val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                val alarm = RingtoneManager.getRingtone(applicationContext, notification)
+                alarm.play()
             }
         }.start()
-    }
-
-    private fun commandStop() {
-        if (!isServiceStarted) return
-
-        Log.i("TAG", "commandStop()")
-        try {
-            countDownTimer?.cancel()
-            stopForeground(true)
-            stopSelf()
-        } finally {
-            isServiceStarted = false
-        }
     }
 
     private fun moveToStartedState() {
