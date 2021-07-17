@@ -12,10 +12,8 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="imageButtonStyle">@style/ImageButtonStyle</item>
+        <item name="colorAccent">@color/red_100</item>
+        <item name="cardBackgroundColor">@color/cardview_light_background</item>
     </style>
 
-    <style name="ImageButtonStyle" parent="Widget.AppCompat.ImageButton">
-        <item name="backgroundTint">@android:color/transparent</item>
-    </style>
 </resources>

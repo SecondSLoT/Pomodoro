@@ -2,7 +2,7 @@ package com.secondslot.pomodoro.features.timer.ui
 
 import android.content.Context
 import android.graphics.drawable.AnimationDrawable
-import androidx.core.content.ContextCompat
+import android.util.TypedValue
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -24,10 +24,14 @@ class TimerViewHolder(
         if (timer.isFinished) {
             binding.startPauseButton.isEnabled = false
             binding.progressCircular.setCurrent(0L)
-            binding.root.setBackgroundColor(ContextCompat.getColor(context, R.color.red_100))
+            val typedValue = TypedValue()
+            context.theme.resolveAttribute(R.attr.colorAccent, typedValue, true)
+            binding.root.setCardBackgroundColor(typedValue.data)
         } else {
             binding.startPauseButton.isEnabled = true
-            binding.root.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+            val typedValue = TypedValue()
+            context.theme.resolveAttribute(R.attr.cardBackgroundColor, typedValue, true)
+            binding.root.setCardBackgroundColor(typedValue.data)
             binding.progressCircular.setCurrent(timer.currentMs)
         }
 

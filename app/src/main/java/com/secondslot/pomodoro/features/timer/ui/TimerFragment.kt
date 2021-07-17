@@ -1,5 +1,6 @@
 package com.secondslot.pomodoro.features.timer.ui
 
+import android.media.RingtoneManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.secondslot.pomodoro.R
 import com.secondslot.pomodoro.databinding.FragmentTimerBinding
 import com.secondslot.pomodoro.features.timer.model.Timer
 import com.secondslot.pomodoro.features.timer.vm.TimerFragmentViewModel
@@ -28,6 +31,7 @@ class TimerFragment : Fragment(), TimerListener {
         _binding = FragmentTimerBinding.inflate(inflater, container, false)
         initViews()
         setListeners()
+        viewModel.onTimerFragmentStateChanged(true)
         return binding.root
     }
 
@@ -40,7 +44,11 @@ class TimerFragment : Fragment(), TimerListener {
 
     private fun setListeners() {
         binding.addNewTimerButton.setOnClickListener {
-            var startMs = binding.minutesPicker.text.toString().toLongOrNull()?.let {
+            var startMs = binding.hoursPicker.text.toString().toLongOrNull()?.let {
+                binding.hoursPicker.text.toString().toLong() * 1000L * 60L * 60L
+            } ?: 0L
+
+            startMs += binding.minutesPicker.text.toString().toLongOrNull()?.let {
                 binding.minutesPicker.text.toString().toLong() * 1000L * 60L
             } ?: 0L
 
@@ -62,7 +70,14 @@ class TimerFragment : Fragment(), TimerListener {
 //        repeat(2) {
 //            viewModel.timers.add(Timer(viewModel.nextId++, 300000, 300000))
 //        }
-//        repeat(3) {
+//        repeat(2) {
+//            viewModel.timers.add(Timer(viewModel.nextId++, 10000, 10000))
+//        }
+//        repeat(4) {
+//            viewModel.timers.add(Timer(viewModel.nextId++, 2000, 2000))
+//        }
+//        submitTimerList(viewModel.timers)
+//        repeat(12) {
 //            viewModel.timers.add(Timer(viewModel.nextId++, 1000, 1000))
 //        }
 //        submitTimerList(viewModel.timers)
@@ -70,7 +85,9 @@ class TimerFragment : Fragment(), TimerListener {
 
     private fun setObservers() {
         viewModel.updateTimerListLiveData.observe(viewLifecycleOwner, { submitTimerList(it) })
-        viewModel.alarmLiveData.observe(viewLifecycleOwner, { showTimerFinishedToast(it) })
+        viewModel.alarmLiveData.observe(viewLifecycleOwner, { it.getContentIfNotHandled()?.let {
+            runAlarm(it)
+        } })
     }
 
     private fun submitTimerList(timers: List<Timer>) {
@@ -85,12 +102,24 @@ class TimerFragment : Fragment(), TimerListener {
 
     override fun delete(id: Int) = viewModel.onDeleteTimer(id)
 
-    private fun showTimerFinishedToast(id: Int) {
+    private fun runAlarm(id: Int) {
+        val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val alarm = RingtoneManager.getRingtone(requireContext(), notification)
+        alarm.play()
+
+        val text = "${context?.getString(R.string.timer)} $id: " +
+                "${context?.getString(R.string.time_is_up)}"
+
         Toast.makeText(
             context,
-            "Timer $id: Time is up!",
+            text,
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.onTimerFragmentStateChanged(false)
     }
 
     companion object {
