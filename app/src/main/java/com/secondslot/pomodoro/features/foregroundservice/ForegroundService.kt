@@ -53,7 +53,7 @@ class ForegroundService : Service() {
         when (intent?.extras?.getString(COMMAND_ID) ?: INVALID) {
             COMMAND_START -> {
                 val timerId = intent?.extras?.getInt(TIMER_ID)
-                builder.setContentTitle("Timer $timerId")
+                builder.setContentTitle(getString(R.string.timer) + " $timerId")
                 val startTime = intent?.extras?.getLong(REMAINING_TIMER_MS) ?: return
                 commandStart(startTime)
             }
@@ -101,7 +101,7 @@ class ForegroundService : Service() {
             override fun onFinish() {
                 notificationManager?.notify(
                     NOTIFICATION_ID,
-                    getNotification("00:00:00 Time is up!")
+                    getNotification(getString(R.string.time_is_up))
                 )
                 val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
                 val alarm = RingtoneManager.getRingtone(applicationContext, notification)

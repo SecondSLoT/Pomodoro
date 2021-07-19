@@ -23,10 +23,10 @@ class TimerViewHolder(
 
         if (timer.isFinished) {
             binding.startPauseButton.isEnabled = false
-            binding.progressCircular.setCurrent(0L)
             val typedValue = TypedValue()
             context.theme.resolveAttribute(R.attr.colorAccent, typedValue, true)
             binding.root.setCardBackgroundColor(typedValue.data)
+            binding.progressCircular.setCurrent(0L)
         } else {
             binding.startPauseButton.isEnabled = true
             val typedValue = TypedValue()

@@ -5,10 +5,8 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.view.View
 import androidx.annotation.AttrRes
-import androidx.core.content.ContextCompat
 import com.secondslot.pomodoro.R
 
 class CircularProgressBar @JvmOverloads constructor(
@@ -45,18 +43,24 @@ class CircularProgressBar @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         if (periodMs == 0L || currentMs == 0L) return
-        val startAngle = (((currentMs % periodMs).toFloat() / periodMs) * 360)
 
-        canvas.drawArc(
-            0f,
-            0f,
-            width.toFloat(),
-            height.toFloat(),
-            -90f,
-            startAngle,
-            true,
-            paint
-        )
+        if (periodMs == currentMs) {
+            canvas.drawCircle(width / 2F, height / 2F, width / 2F, paint)
+        } else {
+
+            val startAngle = (((currentMs % periodMs).toFloat() / periodMs) * 360)
+
+            canvas.drawArc(
+                0f,
+                0f,
+                width.toFloat(),
+                height.toFloat(),
+                -90f,
+                startAngle,
+                true,
+                paint
+            )
+        }
     }
 
     /**

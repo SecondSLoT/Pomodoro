@@ -1,11 +1,13 @@
 package com.secondslot.pomodoro.features.timer.ui
 
+import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +15,7 @@ import com.secondslot.pomodoro.R
 import com.secondslot.pomodoro.databinding.FragmentTimerBinding
 import com.secondslot.pomodoro.features.timer.model.Timer
 import com.secondslot.pomodoro.features.timer.vm.TimerFragmentViewModel
+
 
 class TimerFragment : Fragment(), TimerListener {
 
@@ -56,6 +59,15 @@ class TimerFragment : Fragment(), TimerListener {
 
             viewModel.onAddNewTimerButtonClicked(startMs)
         }
+
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner) {
+                val startMain = Intent(Intent.ACTION_MAIN)
+                startMain.addCategory(Intent.CATEGORY_HOME)
+                startMain.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(startMain)
+            }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
