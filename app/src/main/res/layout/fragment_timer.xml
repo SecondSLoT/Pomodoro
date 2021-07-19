@@ -29,7 +29,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="4dp"
-        app:layout_constraintBottom_toTopOf="@id/minutes_picker"/>
+        app:layout_constraintBottom_toTopOf="@id/barrier"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="seconds_picker, add_new_timer_button" />
 
     <EditText
         android:id="@+id/hours_picker"
@@ -95,8 +102,13 @@
         android:id="@+id/add_new_timer_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginEnd="16dp"
+        tools:text = "Добавить таймер и лоремипсум"
         android:text="@string/add_timer"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/seconds_text_view"
         app:layout_constraintBottom_toBottomOf="@id/margin_bottom_guideline"
         app:layout_constraintEnd_toEndOf="parent" />
 
