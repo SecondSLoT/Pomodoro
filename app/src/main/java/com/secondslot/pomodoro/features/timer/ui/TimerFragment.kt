@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.secondslot.pomodoro.R
 import com.secondslot.pomodoro.databinding.FragmentTimerBinding
+import com.secondslot.pomodoro.features.timer.adapter.TimerAdapter
 import com.secondslot.pomodoro.features.timer.model.Timer
 import com.secondslot.pomodoro.features.timer.vm.TimerFragmentViewModel
 

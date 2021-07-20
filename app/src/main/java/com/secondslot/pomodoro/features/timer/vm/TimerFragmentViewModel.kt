@@ -90,7 +90,7 @@ class TimerFragmentViewModel : ViewModel() {
             }
 
             override fun onFinish() {
-                changeTimer(timer.id, null, isStarted = false, isFinished = true)
+                changeTimer(timer.id, 0L, isStarted = false, isFinished = true)
                 Log.d("myLogs", "onFinish() called")
                 if (isTimerFragmentStarted) _alarmLiveData.value = LiveDataEvent(timer.id)
                 unregisterStartedTimer(timer.id)

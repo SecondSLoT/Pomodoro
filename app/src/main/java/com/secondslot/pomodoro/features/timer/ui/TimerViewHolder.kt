@@ -7,14 +7,13 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.secondslot.pomodoro.R
-import com.secondslot.pomodoro.databinding.TimerItemBinding
+import com.secondslot.pomodoro.databinding.ItemTimerBinding
 import com.secondslot.pomodoro.features.timer.model.Timer
 import com.secondslot.pomodoro.utils.displayTime
 
 class TimerViewHolder(
-    private val binding: TimerItemBinding,
+    private val binding: ItemTimerBinding,
     private val listener: TimerListener,
-    private val context: Context
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(timer: Timer) {
@@ -24,13 +23,13 @@ class TimerViewHolder(
         if (timer.isFinished) {
             binding.startPauseButton.isEnabled = false
             val typedValue = TypedValue()
-            context.theme.resolveAttribute(R.attr.colorAccent, typedValue, true)
+            itemView.context.theme.resolveAttribute(R.attr.colorAccent, typedValue, true)
             binding.root.setCardBackgroundColor(typedValue.data)
             binding.progressCircular.setCurrent(0L)
         } else {
             binding.startPauseButton.isEnabled = true
             val typedValue = TypedValue()
-            context.theme.resolveAttribute(R.attr.cardBackgroundColor, typedValue, true)
+            itemView.context.theme.resolveAttribute(R.attr.cardBackgroundColor, typedValue, true)
             binding.root.setCardBackgroundColor(typedValue.data)
             binding.progressCircular.setCurrent(timer.currentMs)
         }
@@ -69,14 +68,14 @@ class TimerViewHolder(
 
     private fun startTimer(timer: Timer) {
         if (timer.currentMs <= 0L) return
-        binding.startPauseButton.text = context.getString(R.string.stop)
+        binding.startPauseButton.text = itemView.context.getString(R.string.stop)
 
         binding.blinkingIndicator.isVisible = true
         (binding.blinkingIndicator.background as? AnimationDrawable)?.start()
     }
 
     private fun stopTimer() {
-        binding.startPauseButton.text = context.getString(R.string.start)
+        binding.startPauseButton.text = itemView.context.getString(R.string.start)
 
         binding.blinkingIndicator.isInvisible = true
         (binding.blinkingIndicator.background as? AnimationDrawable)?.stop()
