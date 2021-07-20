@@ -1,11 +1,13 @@
-package com.secondslot.pomodoro.features.timer.ui
+package com.secondslot.pomodoro.features.timer.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.secondslot.pomodoro.databinding.TimerItemBinding
+import com.secondslot.pomodoro.databinding.ItemTimerBinding
 import com.secondslot.pomodoro.features.timer.model.Timer
+import com.secondslot.pomodoro.features.timer.ui.TimerListener
+import com.secondslot.pomodoro.features.timer.ui.TimerViewHolder
 
 
 class TimerAdapter(
@@ -14,8 +16,8 @@ class TimerAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimerViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = TimerItemBinding.inflate(layoutInflater, parent, false)
-        return TimerViewHolder(binding, listener, parent.context)
+        val binding = ItemTimerBinding.inflate(layoutInflater, parent, false)
+        return TimerViewHolder(binding, listener)
     }
 
     override fun onBindViewHolder(holder: TimerViewHolder, position: Int) {

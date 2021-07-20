@@ -12,9 +12,12 @@ fun Long.displayTime(): String {
     if (this <= 0L) {
         return START_TIME
     }
-    val h = this / 1000 / 3600
-    val m = this / 1000 % 3600 / 60
-    val s = this / 1000 % 60
+
+    val correction = if (this != 0L) this + 999 else this
+
+    val h = correction / 1000 / 3600
+    val m = correction / 1000 % 3600 / 60
+    val s = correction / 1000 % 60
 //    val ms = this % 1000 / 10
 
     return "${displaySlot(h)}:${displaySlot(m)}:${displaySlot(s)}"
