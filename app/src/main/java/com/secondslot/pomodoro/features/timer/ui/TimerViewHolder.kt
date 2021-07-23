@@ -1,6 +1,5 @@
 package com.secondslot.pomodoro.features.timer.ui
 
-import android.content.Context
 import android.graphics.drawable.AnimationDrawable
 import android.util.TypedValue
 import androidx.core.view.isInvisible
@@ -20,15 +19,15 @@ class TimerViewHolder(
         binding.stopwatchTimer.text = timer.currentMs.displayTime()
         binding.progressCircular.setPeriod(timer.startMs)
 
+        val typedValue = TypedValue()
+
         if (timer.isFinished) {
             binding.startPauseButton.isEnabled = false
-            val typedValue = TypedValue()
             itemView.context.theme.resolveAttribute(R.attr.colorAccent, typedValue, true)
             binding.root.setCardBackgroundColor(typedValue.data)
             binding.progressCircular.setCurrent(0L)
         } else {
             binding.startPauseButton.isEnabled = true
-            val typedValue = TypedValue()
             itemView.context.theme.resolveAttribute(R.attr.cardBackgroundColor, typedValue, true)
             binding.root.setCardBackgroundColor(typedValue.data)
             binding.progressCircular.setCurrent(timer.currentMs)

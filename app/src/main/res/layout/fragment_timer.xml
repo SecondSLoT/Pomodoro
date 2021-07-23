@@ -104,7 +104,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="16dp"
-        tools:text = "Добавить таймер и лоремипсум"
         android:text="@string/add_timer"
         app:layout_constrainedWidth="true"
         app:layout_constraintHorizontal_bias="1"
