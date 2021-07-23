@@ -41,6 +41,7 @@ class TimerFragment : Fragment(), TimerListener {
         recyclerView.run {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = timerAdapter
+            setHasFixedSize(true)
         }
     }
 
@@ -57,6 +58,12 @@ class TimerFragment : Fragment(), TimerListener {
             startMs += binding.secondsPicker.text.toString().toLongOrNull()?.let {
                 binding.secondsPicker.text.toString().toLong() * 1000L
             } ?: 0L
+
+            binding.run {
+                hoursPicker.clearFocus()
+                minutesPicker.clearFocus()
+                secondsPicker.clearFocus()
+            }
 
             viewModel.onAddNewTimerButtonClicked(startMs)
         }
