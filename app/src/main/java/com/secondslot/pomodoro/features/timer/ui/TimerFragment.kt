@@ -82,7 +82,7 @@ class TimerFragment : Fragment(), TimerListener {
         super.onViewCreated(view, savedInstanceState)
 
         setObservers()
-        submitTimerList(viewModel.timers)
+        submitTimerList(Pair(viewModel.timers, false))
 
         // Создание таймеров при запуске приложения для тестов
 //        repeat(2) {
@@ -107,23 +107,24 @@ class TimerFragment : Fragment(), TimerListener {
     }
 
     private fun setObservers() {
-        viewModel.updateTimerListLiveData.observe(viewLifecycleOwner, { submitTimerList(it) })
+        viewModel.updateTimerListLiveData.observe(viewLifecycleOwner) { submitTimerList(it) }
 
-        viewModel.alarmLiveData.observe(viewLifecycleOwner, {
+        viewModel.alarmLiveData.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let {
                 runAlarm(it)
             }
-        })
+        }
 
-        viewModel.timeNotSetLiveData.observe(viewLifecycleOwner, {
+        viewModel.timeNotSetLiveData.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let {
                 showTimeNotSetToast()
             }
-        })
+        }
     }
 
-    private fun submitTimerList(timers: List<Timer>) {
-        timerAdapter.submitList(timers.toList())
+    private fun submitTimerList(updateData: Pair<List<Timer>, Boolean>) {
+        if (binding.recyclerView.isAnimating && updateData.second) return
+            timerAdapter.submitList(updateData.first.toList())
     }
 
     override fun start(id: Int) = viewModel.onStartTimer(id)

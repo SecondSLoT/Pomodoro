@@ -33,8 +33,7 @@ class TimerAdapter(
             }
 
             override fun areContentsTheSame(oldItem: Timer, newItem: Timer): Boolean {
-                return oldItem.currentMs == newItem.currentMs &&
-                        oldItem.isStarted == newItem.isStarted
+                return oldItem == newItem
             }
 
             override fun getChangePayload(oldItem: Timer, newItem: Timer) = Any()

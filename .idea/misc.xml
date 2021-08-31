@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Programming/Android_Studio_Workspace/_Trainings/_RS_School/rsschool2021-Android-task-pomodoro/app/src/main/res/layout/fragment_timer.xml" value="0.35989583333333336" />
+        <entry key="..\:/Programming/Android_Studio_Workspace/_Trainings/_RS_School/rsschool2021-Android-task-pomodoro/app/src/main/res/layout/item_timer.xml" value="0.35989583333333336" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
