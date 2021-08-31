@@ -18,8 +18,8 @@ class TimerFragmentViewModel : ViewModel() {
     private var countDownTimer: CountDownTimer? = null
     private var isTimerFragmentStarted = true
 
-    private val _updateTimerListLiveData = MutableLiveData<List<Timer>>()
-    val updateTimerListLiveData = _updateTimerListLiveData as LiveData<List<Timer>>
+    private val _updateTimerListLiveData = MutableLiveData<Pair<List<Timer>, Boolean>>()
+    val updateTimerListLiveData = _updateTimerListLiveData as LiveData<Pair<List<Timer>, Boolean>>
 
     private val _alarmLiveData = MutableLiveData<LiveDataEvent<Int>>()
     val alarmLiveData = _alarmLiveData as LiveData<LiveDataEvent<Int>>
@@ -30,7 +30,7 @@ class TimerFragmentViewModel : ViewModel() {
     fun onAddNewTimerButtonClicked(startMs: Long) {
         if (startMs != 0L) {
             timers.add(Timer(nextId++, startMs, startMs))
-            _updateTimerListLiveData.value = timers
+            _updateTimerListLiveData.value = Pair(timers, false)
         } else {
             _timeNotSetLiveData.value = LiveDataEvent(true)
         }
@@ -43,7 +43,7 @@ class TimerFragmentViewModel : ViewModel() {
         }
 
         countDownTimer?.cancel()
-        countDownTimer = timers.find { it.id == id}?.let { getCountDownTimer(it) }
+        countDownTimer = timers.find { it.id == id }?.let { getCountDownTimer(it) }
         countDownTimer?.start()
 
         startedTimerId = id
@@ -62,10 +62,16 @@ class TimerFragmentViewModel : ViewModel() {
     fun onDeleteTimer(id: Int) {
         unregisterStartedTimer(id)
         timers.remove(timers.find { it.id == id })
-        _updateTimerListLiveData.value = timers
+        _updateTimerListLiveData.value = Pair(timers, false)
     }
 
-    private fun changeTimer(id: Int, currentMs: Long?, isStarted: Boolean, isFinished: Boolean?) {
+    private fun changeTimer(
+        id: Int,
+        currentMs: Long?,
+        isStarted: Boolean,
+        isFinished: Boolean?,
+        canSkipViewHolderUpdate: Boolean = false
+    ) {
         val timer = timers.find { it.id == id }
         timer?.let {
             val newTimer = Timer(
@@ -78,14 +84,19 @@ class TimerFragmentViewModel : ViewModel() {
             timers[timers.indexOf(timer)] = newTimer
         }
 
-        _updateTimerListLiveData.value = timers
+        _updateTimerListLiveData.value = Pair(timers, canSkipViewHolderUpdate)
     }
 
     private fun getCountDownTimer(timer: Timer): CountDownTimer {
         return object : CountDownTimer(timer.currentMs, COUNT_DOWN_INTERVAL) {
 
             override fun onTick(millisUntilFinished: Long) {
-                changeTimer(timer.id, millisUntilFinished, isStarted = true, isFinished = false)
+                changeTimer(
+                    timer.id,
+                    millisUntilFinished,
+                    isStarted = true,
+                    isFinished = false,
+                    true)
                 EventBus.getDefault().post(WorkingTimerEvent(timer.id, millisUntilFinished))
             }
 
@@ -111,6 +122,6 @@ class TimerFragmentViewModel : ViewModel() {
     }
 
     companion object {
-        private const val COUNT_DOWN_INTERVAL = 100L
+        private const val COUNT_DOWN_INTERVAL = 50L
     }
 }
